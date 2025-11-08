@@ -1,25 +1,26 @@
 resource "azurerm_kubernetes_cluster" "default" {
-  name                = "aks-test-001"
-  location            = "eastus"
-  resource_group_name = "lgbmegathon"
-  dns_prefix          = "dns-k8s-test"
-  kubernetes_version  = "1.27.9"
+  name                = var.kubernetes_cluster_name
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+  dns_prefix          = var.dns_prefix
+  kubernetes_version  = var.kubernetes_version
 
   default_node_pool {
-    name            = "testnodepool"
-    node_count      = 2
-    vm_size         = "Standard_D2_v2"
+    name            = var.default_node_pool_name
+    node_count      = var.node_count
+    vm_size         = var.vm_size
     os_disk_size_gb = 30
   }
+  
 
   service_principal {
-    client_id     = "client-id"
-    client_secret = "client-secret"
+    client_id     = var.clientId
+    client_secret = var.clientSecret
   }
 
   role_based_access_control_enabled = true
 
   tags = {
-    environment = "dev"
+    environment = var.environment
   }
 }
